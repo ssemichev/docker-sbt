@@ -1,10 +1,12 @@
 NAME = ssemichev/docker-image:sbt
 
+default: build
+
 debug:
 	docker run --rm -it $(NAME) /bin/sh
 
 run:
-	docker run --rm -it $(NAME) /bin/sh
+	docker run --rm -it -v ~/projects:/projects $(NAME) /bin/sh
 
 build:
 	docker build -t $(NAME) \
