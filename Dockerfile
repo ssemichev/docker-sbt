@@ -28,4 +28,4 @@ LABEL maintainer="ssemichev@gmail.com" \
 	  org.label-schema.version=$IMAGE_VERSION \
       org.label-schema.vcs-url="https://github.com/ssemichev/docker-sbt" \
       org.label-schema.schema-version="1.0" \
-	  org.label-schema.docker.cmd="docker run --rm -it -v <host path>:/projects ssemichev/sbt:latest /bin/sh"
+	  org.label-schema.docker.cmd="docker run --rm -it -v HOST_PATH:/projects ssemichev/sbt:latest /bin/sh"
