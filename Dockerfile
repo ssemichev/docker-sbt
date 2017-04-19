@@ -25,6 +25,7 @@ ARG VCS_REF
 LABEL maintainer="ssemichev@gmail.com" \
       org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.vcs-ref=$VCS_REF \
+	  org.label-schema.version=$IMAGE_VERSION \
       org.label-schema.vcs-url="https://github.com/ssemichev/docker-sbt" \
       org.label-schema.schema-version="1.0" \
 	  org.label-schema.docker.cmd="docker run --rm -it -v <host path>:/projects ssemichev/sbt:latest /bin/sh"

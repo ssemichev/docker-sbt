@@ -1,20 +1,40 @@
-NAME = ssemichev/docker-image:sbt
+OWNER=ssemichev
+IMAGE_NAME=sbt
+VCS_REF=`git rev-parse --short HEAD`
+IMAGE_VERSION=1.0.$(TRAVIS_BUILD_NUMBER)
+BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"`
+QNAME=$(OWNER)/$(IMAGE_NAME)
 
-default: build
+GIT_TAG=$(QNAME):$(VCS_REF)
+BUILD_TAG=$(QNAME):$(IMAGE_VERSION)
+LATEST_TAG=$(QNAME):latest
 
 debug:
-	docker run --rm -it $(NAME) /bin/sh
+	docker run --rm -it $(LATEST_TAG) /bin/sh	
 
 run:
-	docker run --rm -it -v ~/projects:/projects $(NAME) /bin/sh
+	docker run --rm -it -v ~/projects:/projects $(LATEST_TAG) /bin/sh
+	
+lint:
+	docker run -it --rm -v "$(PWD)/Dockerfile:/Dockerfile:ro" redcoolbeans/dockerlint
 
 build:
-	docker build -t $(NAME) \
-		--build-arg VCS_REF=`git rev-parse --short HEAD` \
-		--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` .
+	docker build \
+		--build-arg VCS_REF=$(VCS_REF) \
+		--build-arg IMAGE_VERSION=$(IMAGE_VERSION) \
+		--build-arg BUILD_DATE=$(BUILD_DATE) \
+		-t $(GIT_TAG) .
+		
+tag:
+	docker tag $(GIT_TAG) $(BUILD_TAG)
+	docker tag $(GIT_TAG) $(LATEST_TAG)
+
+login:
+	@docker login -u "$(DOCKER_USER)" -p "$(DOCKER_PASSWORD)"
 
 push:
-	docker push $(NAME)
+	docker push $(GIT_TAG)
+	docker push $(BUILD_TAG)
+	docker push $(LATEST_TAG)
 
-release: build push
-
+release: lint build tag push
