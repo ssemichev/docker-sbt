@@ -1,6 +1,4 @@
-FROM deepcortex/scala
-
-LABEL maintainer="ssemichev@gmail.com"
+FROM deepcortex/scala:latest
 
 ENV SBT_VERSION 0.13.15
 ENV SBT_HOME /usr/local/sbt-launcher-packaging-${SBT_VERSION}
