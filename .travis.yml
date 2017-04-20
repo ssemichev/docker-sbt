@@ -15,7 +15,7 @@ before_install:
   - make login
 
 script:
-  - make lint build tag
+  - make lint build tag test
 
 deploy:
   provider: script

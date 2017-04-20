@@ -9,8 +9,13 @@ GIT_TAG=$(QNAME):$(VCS_REF)
 BUILD_TAG=$(QNAME):$(IMAGE_VERSION)
 LATEST_TAG=$(QNAME):latest
 
+default: build tag
+
 debug:
 	docker run --rm -it $(LATEST_TAG) /bin/sh	
+
+test:	
+        docker run --rm -it $(LATEST_TAG) pwd
 
 run:
 	docker run --rm -it -v ~/projects:/projects $(LATEST_TAG) /bin/sh
@@ -37,4 +42,4 @@ push:
 	docker push $(BUILD_TAG)
 	docker push $(LATEST_TAG)
 
-release: lint build tag push
+release: lint test build tag push
